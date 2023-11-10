@@ -44,8 +44,8 @@ export default class CachedRequestsManager {
         if (url != "") {
             let indexToDelete = [];
             let index = 0;
-            for (let cache of cachedRequests) {
-                if (cache.url == url)
+            for (let endpoint of cachedRequests) {
+                if (endpoint.url.toLowerCase().indexOf(url.toLowerCase()) > -1)
                     indexToDelete.push(index);
                 index++;
             }
@@ -69,13 +69,17 @@ export default class CachedRequestsManager {
     }
 
     static get(HttpContext) {
-        let url = HttpContext.request.url;
-        let cache = this.find(url);
-        if (cache != null) {
-            const content = cache.content;
-            const ETag = cache.ETag;
-            HttpContext.response.JSON(content, ETag, true);
+        if (HttpContext.req.method == "GET") {
+            let url = HttpContext.req.url;
+            let cache = CachedRequestsManager.find(url);
+            if (cache != null) {
+                const content = cache.content;
+                const ETag = cache.ETag;
+                HttpContext.response.JSON(content, ETag, true);
+                return true;
+            }
         }
+        return false;
     }
 }
 

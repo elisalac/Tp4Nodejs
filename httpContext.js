@@ -24,8 +24,8 @@ export default class HttpContext {
         this.host = (this.secure ? "https://" : "http://") + req.headers["host"];
         this.hostIp = req.headers['x-forwarded-for'] != undefined ? req.headers['x-forwarded-for'] : "127.0.0.1";
     }
-    static get() { 
-        return httpContext; 
+    static get() {
+        return httpContext;
     }
     async getJSONPayload() {
         return await new Promise(resolve => {
