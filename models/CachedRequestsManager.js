@@ -1,6 +1,7 @@
 import * as utilities from "../utilities.js";
 import * as serverVariables from "../serverVariables.js";
 import { log } from "../log.js";
+import HttpContext from "../httpContext.js";
 let cachedRequestsExpirationTime = serverVariables.get("main.repository.CacheExpirationTime");
 
 globalThis.cachedRequests = [];
@@ -37,6 +38,7 @@ export default class CachedRequestsManager {
         } catch (error) {
             console.log("cached request error!", error);
         }
+        return null;
     }
 
     static clear(url) {
@@ -73,8 +75,8 @@ export default class CachedRequestsManager {
             let url = HttpContext.req.url;
             let cache = CachedRequestsManager.find(url);
             if (cache != null) {
-                const content = cache.content;
-                const ETag = cache.ETag;
+                let content = cache.content;
+                let ETag = cache.ETag;
                 HttpContext.response.JSON(content, ETag, true);
                 return true;
             }
