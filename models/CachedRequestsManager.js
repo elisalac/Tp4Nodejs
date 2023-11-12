@@ -31,7 +31,8 @@ export default class CachedRequestsManager {
                     if (cache.url == url) {
                         cache.Expire_Time = utilities.nowInSeconds() + cachedRequestsExpirationTime;
                         console.log("Url " + url + " has been retreived.")
-                        return cache.content;
+                        //return cache.content;
+                        return cache;
                     }
                 }
             }
@@ -75,7 +76,7 @@ export default class CachedRequestsManager {
             let url = HttpContext.req.url;
             let cache = CachedRequestsManager.find(url);
             if (cache != null) {
-                let content = cache.content;
+                let content = JSON.parse(cache.content);
                 let ETag = cache.ETag;
                 HttpContext.response.JSON(content, ETag, true);
                 return true;
