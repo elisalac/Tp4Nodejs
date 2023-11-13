@@ -63,7 +63,7 @@ export default class CachedRequestsManager {
         let now = utilities.nowInSeconds();
         for (let cache of cachedRequests) {
             if (cache.Expire_Time < now) {
-                console.log("Cached request " + url + "expired");
+                console.log("Cached request " + cache.url + "expired");
                 indexToDelete.push(index);
             }
             index++;
